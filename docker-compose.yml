@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+  web:
+    build: .
+    command: python /code/manage.py migrate --noinput
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    environment:
+      - SECRET_KEY=x^)h7pf=if_x+c8u*ahf$ne#yo1(7@kv#ajj$c7tukkalk$c#l
