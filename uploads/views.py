@@ -5,21 +5,36 @@ from django.views.decorators.csrf import csrf_exempt
 from uploads.forms import DocumentForm
 from uploads.models import Document
 
+import logging
+from cid.locals import get_cid
+
+logger = logging.getLogger('uploads')
 
 def home(request):
     documents = Document.objects.all()
     return render(request, 'home.html', { 'documents': documents })
 
-def simple_upload(request):
+
+def backgrounds(request):
+    return save_file(request, 'backgrounds/')
+
+
+def classes(request):
+    return save_file(request)
+
+
+def save_file(request, path=None):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
+        filename = fs.save(myfile.name if path is None else path + myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
-        return render(request, 'simple_upload.html', {
+        logger.info(get_cid())
+        logger.info(fs.path(filename))
+        return render(request, 'background_upload.html', {
             'uploaded_file_url': uploaded_file_url
         })
-    return render(request, 'simple_upload.html')
+    return render(request, 'background_upload.html')
 
 def model_form_upload(request):
     if request.method == 'POST':

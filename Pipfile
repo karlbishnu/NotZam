@@ -8,6 +8,8 @@ django = "*"
 gunicorn = "==19.9.0"
 djangorestframework = "*"
 django-rest-swagger = "*"
+django-cid = "*"
+kafka-python = "*"
 
 [dev-packages]
 

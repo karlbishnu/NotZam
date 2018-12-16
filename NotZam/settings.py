@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
-    'blog',
+    'cid.apps.CidAppConfig',
     'uploads',
 ]
 
@@ -128,3 +128,37 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CID_GENERATE = True
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '[cid: %(cid)s] %(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+        'simple': {
+            'format': '[cid: %(cid)s] %(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'filters': {
+        'correlation': {
+            '()': 'cid.log.CidContextFilter'
+        },
+    },
+    'loggers': {
+        'uploads': {
+            'handlers': ['console'],
+            'filters': ['correlation'],
+            'propagate': True,
+            'level': 'INFO'
+        },
+    },
+}
