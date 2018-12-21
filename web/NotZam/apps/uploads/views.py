@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
-from django.views.decorators.csrf import csrf_exempt
 
-from uploads.forms import DocumentForm
-from uploads.models import Document
+from .models import Document
+from .forms import DocumentForm
 
 import logging
 from cid.locals import get_cid
@@ -12,7 +11,7 @@ logger = logging.getLogger('uploads')
 
 def home(request):
     documents = Document.objects.all()
-    return render(request, 'home.html', { 'documents': documents })
+    return render(request, 'home.html', {'documents': documents})
 
 
 def backgrounds(request):

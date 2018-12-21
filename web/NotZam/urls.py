@@ -22,6 +22,6 @@ urlpatterns = [
     path('rest-api/', include('rest_framework.urls')),
     path('rest-swagger/', schema_view),
     path('admin/', admin.site.urls),
-    path('uploads/', include('uploads.urls'))
+    path('uploads/', include('NotZam.apps.uploads.urls'))
     #path('', include('uploads.urls')),
 ]
