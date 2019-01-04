@@ -7,7 +7,6 @@ from .forms import DocumentForm
 import logging
 from cid.locals import get_cid
 
-import json
 from collections import OrderedDict
 
 from NotZam.mq.message_queue import mq
@@ -59,25 +58,8 @@ def model_form_upload(request):
 
 msg_q = mq("test")
 
-import json
-import os
-from time import sleep
-
-def serializer(m):
-    return json.dumps(m).encode('utf-8')
-
-
-from kafka import KafkaProducer, KafkaConsumer
-KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
-#producer = KafkaProducer(bootstrap_servers=KAFKA_BROKER_URL,
-#                             value_serializer=lambda m: serializer(m))
-
-print("Kafka producer of %s started" % KAFKA_BROKER_URL)
-
 def make_json(path):
     jsondict = OrderedDict()
     jsondict["cid"] = get_cid()
     jsondict["path"] = path
-    #producer.send('test', jsondict)
-    #sleep(1)
-    sent = msg_q(jsondict)
+    msg_q(jsondict)
