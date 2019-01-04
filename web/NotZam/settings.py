@@ -144,7 +144,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
@@ -155,11 +155,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        'uploads': {
+        'notzam': {
             'handlers': ['console'],
             'filters': ['correlation'],
             'propagate': True,
-            'level': 'INFO'
+            'level': 'DEBUG'
         },
     },
 }

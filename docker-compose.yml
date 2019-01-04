@@ -11,3 +11,13 @@ services:
       - 8000:8000
     environment:
       - SECRET_KEY=x^)h7pf=if_x+c8u*ahf$ne#yo1(7@kv#ajj$c7tukkalk$c#l
+      - KAFKA_BROKER_URL=kafka:9092
+  consumer:
+    build: ./consumer
+    environment:
+      - KAFKA_BROKER_URL=kafka:9092
+      - UPLOAD_TOPIC=test
+networks:
+  default:
+    external:
+      name: kafka-network
