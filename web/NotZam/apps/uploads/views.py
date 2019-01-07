@@ -9,7 +9,11 @@ from cid.locals import get_cid
 
 from collections import OrderedDict
 
-from NotZam.mq.message_queue import mq
+from common.mq.kafka import producer
+import os
+
+KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
+TOPIC = os.environ.get('UPLOAD_TOPIC')
 
 logger = logging.getLogger('notzam')
 
@@ -56,10 +60,10 @@ def model_form_upload(request):
     })
 
 
-msg_q = mq("test")
+msg_q = producer(KAFKA_BROKER_URL)
 
 def make_json(path):
     jsondict = OrderedDict()
     jsondict["cid"] = get_cid()
     jsondict["path"] = path
-    msg_q(jsondict)
+    msg_q(TOPIC, jsondict)
