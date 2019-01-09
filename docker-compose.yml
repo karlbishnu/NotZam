@@ -13,15 +13,20 @@ services:
     environment:
       - SECRET_KEY=x^)h7pf=if_x+c8u*ahf$ne#yo1(7@kv#ajj$c7tukkalk$c#l
       - KAFKA_BROKER_URL=kafka:9092
-      - UPLOAD_TOPIC=test
-  consumer:
-    build: ./consumer
+      - UPLOAD_TOPIC=UPLOADS
+  slicer:
+    build: ./slicer
     volumes:
-      - ./consumer:/code
-      - ./common/:/code/common
+      - ./slicer:/code
+      - ./common:/code/common
+      - ./web/uploads:/code/uploads
     environment:
       - KAFKA_BROKER_URL=kafka:9092
-      - UPLOAD_TOPIC=test
+      - UPLOAD_TOPIC=UPLOADS
+    depends_on:
+      - ffmpeg
+  ffmpeg:
+    image: jrottenberg/ffmpeg:3.3
 networks:
   default:
     external:

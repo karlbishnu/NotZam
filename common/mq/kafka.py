@@ -12,7 +12,6 @@ def consumer(broker, topic):
         topic,
         bootstrap_servers=broker,
         value_deserializer=lambda value: json.loads(value),
-        auto_offset_reset='earliest',
     )
 
     logger.info("Kafka consumer of {broker}-{topic} started".format(broker=broker, topic=topic))

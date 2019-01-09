@@ -24,7 +24,15 @@ def home(request):
 
 
 def backgrounds(request):
-    return save_file(request, 'backgrounds/')
+    return save_file(request, 'backgrounds')
+
+
+def activates(request):
+    return save_file(request, 'activates')
+
+
+def negatives(request):
+    return save_file(request, 'negatives')
 
 
 def classes(request):
@@ -35,7 +43,7 @@ def save_file(request, path=None):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name if path is None else path + myfile.name, myfile)
+        filename = fs.save(myfile.name if path is None else path + '/' + myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
 
         logger.info(fs.path(filename))
