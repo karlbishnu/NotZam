@@ -1,5 +1,8 @@
+import os
 import unittest
 from unittest.mock import patch
+
+from pydub import AudioSegment
 
 
 class KafkaMessage:
@@ -20,7 +23,14 @@ class SliceTests(unittest.TestCase):
     @patch('common.mq.kafka.producer', return_value=None)
     def test_runs(self, producer):
         import app
-        app.slice_sound(None)
+        path = "test-source/noise.wav"
+        duration = 10
+        res = app.slice_sound(path, duration)
+
+        sound: AudioSegment = AudioSegment.from_file(path, channel=1)
+        self.assertEqual(int(int(sound.duration_seconds)/duration)+1, len(res))
+        for file in res:
+            os.remove(file)
 
 
 if __name__ == '__main__':
