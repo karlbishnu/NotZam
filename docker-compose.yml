@@ -16,7 +16,6 @@ services:
       - UPLOAD_TOPIC=UPLOADS
   slicer:
     build: ./slicer
-    command: echo $HOSTNAME
     volumes:
       - ./slicer:/code
       - ./common:/code/common
@@ -24,6 +23,7 @@ services:
     environment:
       - KAFKA_BROKER_URL=${HOSTNAME}:9092
       - UPLOAD_TOPIC=UPLOADS
+      - SLICER_TOPICS=SLICED
       - MIN_BACK_DURATION_SEC=10
     depends_on:
       - ffmpeg

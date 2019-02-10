@@ -32,6 +32,12 @@ class SliceTests(unittest.TestCase):
         for file in res:
             os.remove(file)
 
+    def test_parsing_env(self):
+        expected = ['topic1', 'topic2', 'topic3']
+        res = [topic.strip() for topic in str('topic1, topic2 ,topic3').split(",")]
+        self.assertListEqual(expected, res)
+
+
 
 if __name__ == '__main__':
     unittest.main()
