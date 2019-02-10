@@ -20,23 +20,23 @@ def _mock_kafka_msg():
 
 class SliceTests(unittest.TestCase):
 
-    @patch('common.mq.kafka.producer', return_value=None)
-    def test_runs(self, producer):
-        import app
+    def test_runs(self):
+        import slicer
         path = "test-source/noise.wav"
         duration = 10
-        res = app.slice_sound(path, duration)
+        res = slicer.slice_sound(path, duration)
 
         sound: AudioSegment = AudioSegment.from_file(path, channel=1)
         self.assertEqual(int(int(sound.duration_seconds)/duration)+1, len(res))
         for file in res:
             os.remove(file)
 
-    def test_parsing_env(self):
+    @patch('common.mq.kafka.producer', return_value=None)
+    @patch('os.environ.get', return_value='topic1, topic2 , topic3')
+    def test_parsing_env(self, producer, env_topic):
         expected = ['topic1', 'topic2', 'topic3']
-        res = [topic.strip() for topic in str('topic1, topic2 ,topic3').split(",")]
-        self.assertListEqual(expected, res)
-
+        from app import PRODUCER_TOPICS
+        self.assertListEqual(expected, PRODUCER_TOPICS)
 
 
 if __name__ == '__main__':
