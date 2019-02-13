@@ -1,21 +1,7 @@
 import os
 import unittest
 from unittest.mock import patch
-
 from pydub import AudioSegment
-
-
-class KafkaMessage:
-    def __init__(self, count):
-        self.value = {"cid": count, "path": "/test"}
-
-
-def _mock_kafka_msg():
-    count = 0
-    while count < 10:
-        message = KafkaMessage(count)
-        yield message
-        count += 1
 
 
 class SliceTests(unittest.TestCase):
@@ -35,6 +21,13 @@ class SliceTests(unittest.TestCase):
     @patch('os.environ.get', return_value='topic1, topic2 , topic3')
     def test_parsing_env(self, producer, env_topic):
         expected = ['topic1', 'topic2', 'topic3']
+        from app import PRODUCER_TOPICS
+        self.assertListEqual(expected, PRODUCER_TOPICS)
+
+    @patch('common.mq.kafka.producer', return_value=None)
+    @patch('os.environ.get', return_value='topic1')
+    def test_parsing_env_single_value(self, producer, env_topic):
+        expected = ['topic1']
         from app import PRODUCER_TOPICS
         self.assertListEqual(expected, PRODUCER_TOPICS)
 
