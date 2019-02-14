@@ -27,6 +27,10 @@ services:
       - MIN_BACK_DURATION_SEC=10
     depends_on:
       - ffmpeg
+  dp:
+    build: ./dp
+      - ./dp:/code
+      - ./common:/code/common
   ffmpeg:
     image: jrottenberg/ffmpeg:3.3
 networks:
