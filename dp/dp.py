@@ -12,18 +12,21 @@ from common.audio.audio_utils import match_target_amplitude, graph_spectrogram
 logger = get_logger(__name__)
 
 
-def create_training_example(background, activates, negatives, Ty = 1375, file_name="train.wav"):
+def create_training_example(background, activates, negatives, Ty = 1375):
     """
     Creates a training example with a given background, activates, and negatives.
 
     Arguments:
     background -- a 10 second background audio recording
-    activates -- a list of audio segments of the word "activate"
-    negatives -- a list of audio segments of random words that are not "activate"
+    activates -- a list of tuple of file paths and audio segments of the word "activate"
+    negatives -- a list of tuple of file paths and audio segments of random words that are not "activate"
 
     Returns:
-    x -- the spectrogram of the training example
-    y -- the label at each time step of the spectrogram
+    x:numpy.ndarray -- the spectrogram of the training example
+    y:numpy.ndarray -- the label at each time step of the spectrogram
+    background:pydub.AudioSegment - created raw data
+    random_activates:list -- a list of inserted activates info. The tuple is composed of paths and AudioSegments
+    random_negatives:list -- a list of inserted negatives info. The tuple is composed of paths and AudioSegments
     """
 
     # Set the random seed
@@ -46,7 +49,7 @@ def create_training_example(background, activates, negatives, Ty = 1375, file_na
     # Step 3: Loop over randomly selected "activate" clips and insert in background
     for random_activate in random_activates:
         # Insert the audio clip on the background
-        background, segment_time = insert_audio_clip(background, random_activate, previous_segments)
+        background, segment_time = insert_audio_clip(background, random_activate[1], previous_segments)
         # Retrieve segment_start and segment_end from segment_time
         segment_start, segment_end = segment_time
         # Insert labels in "y"
@@ -60,18 +63,15 @@ def create_training_example(background, activates, negatives, Ty = 1375, file_na
     # Step 4: Loop over randomly selected negative clips and insert in background
     for random_negative in random_negatives:
         # Insert the audio clip on the background
-        background, _ = insert_audio_clip(background, random_negative, previous_segments)
+        background, _ = insert_audio_clip(background, random_negative[1], previous_segments)
 
     # Standardize the volume of the audio clip
     background = match_target_amplitude(background, -20.0)
 
-    # Export new training example
-    file_handle = background.export(file_name, format="wav")
-
     # Get and plot spectrogram of the new recording (background with superposition of positive and negatives)
     x = graph_spectrogram(background)
 
-    return x, y
+    return x, y, background, random_activates, random_negatives
 
 
 def load_backgrounds(data):
@@ -86,13 +86,13 @@ def load_backgrounds(data):
 
 
 def load_all_waves(root):
-    audios = {"audios":[]}
+    audios = []
     for path, dirs, filenames in os.walk(root):
         for filename in filenames:
             if filename.endswith("mp3"):
                 full_path = path+"/"+filename
                 audio = open_audio(full_path)
-                audios["audios"].append({"path": full_path, "audio": audio})
+                audios.append((full_path, audio))
 
     return audios
 
@@ -103,16 +103,64 @@ def load_raw_audios(root):
     return activates, negatives
 
 
-def process(data):
-    root = 'assets'
+def make_root_dir(asset_root):
     date_str = date.today().isoformat()
-    path = root+'/'+date_str
-    backgrounds = load_backgrounds(data)
-    activates, negatives = load_raw_audios(root)
-
-    for background in backgrounds:
-        create_training_example(background, activates, negatives)
+    date_path = asset_root + '/' + date_str
+    os.makedirs(date_path, exist_ok=True)
+    dir_seq = len(os.listdir(date_path))
+    path = date_path + '/' + date_str + '-' + str.format('%03d' % dir_seq)
     os.makedirs(path, exist_ok=True)
-    seq = len(os.listdir(path))
+    return path
 
-    return None
+
+def save(asset_root, X, Y, training_examples):
+    saved_file_path_dict = {}
+    path = make_root_dir(asset_root)
+
+    xy_train_path = path + '/XY_train'
+    os.makedirs(xy_train_path)
+    x_path = xy_train_path+'/X.npy'
+    y_path = xy_train_path+'/Y.npy'
+    np.save(x_path, X)
+    np.save(y_path, Y)
+
+    saved_file_path_dict['x'] = x_path
+    saved_file_path_dict['y'] = y_path
+
+    raw_audios = []
+    saved_file_path_dict['rawAudios'] = raw_audios
+    raw_audio_root_path = path + '/raw_audios'
+    os.makedirs(raw_audio_root_path)
+    for i, training_example in enumerate(training_examples):
+        raw_audio_path = raw_audio_root_path+'/'+str(i)+'.wav'
+        training_example.export(raw_audio_path, format='wav')
+        raw_audios.append(raw_audio_path)
+
+    return saved_file_path_dict
+
+
+def process(data):
+    asset_root = 'assets'
+
+    backgrounds = load_backgrounds(data)
+    activates, negatives = load_raw_audios(asset_root)
+
+    X = np.zeros((len(backgrounds), 5511, 101))
+    Y = np.zeros((len(backgrounds), 1375))
+    training_examples = []
+    for i, background in enumerate(backgrounds):
+        x, y, training_example, random_activates, random_negatives\
+            = create_training_example(background, activates, negatives)
+        logger.info('numOfActivates[{num_of_activates}], '
+                    'randomActivates[{random_activates}], '
+                    'numOfNegatives[{num_of_negatives}], '
+                    'randomNegatives[{random_negatives}]'
+            .format(num_of_activates=len(activates),
+                    random_activates=random_activates,
+                    num_of_negatives=len(negatives),
+                    random_negatives=random_negatives))
+        X[i] = x
+        Y[i] = y
+        training_examples.append(training_example)
+
+    return save(asset_root, X, Y, training_examples)

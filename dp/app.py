@@ -8,8 +8,8 @@ from common.log.cid import set_cid
 from .dp import process
 
 KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
-CONSUMER_TOPIC = os.environ.get('DP_CON_TOPIC')
-PRODUCER_TOPICS = [topic.strip() for topic in str(os.environ.get('DP_PRO_TOPICS')).split(",")]
+CONSUMER_TOPIC = os.environ.get('TOPIC_DP_CONSUMER')
+PRODUCER_TOPICS = [topic.strip() for topic in str(os.environ.get('TOPICS_DP_PRODUCER')).split(",")]
 
 logger = get_logger(__name__)
 
