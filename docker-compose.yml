@@ -14,6 +14,8 @@ services:
       - SECRET_KEY=x^)h7pf=if_x+c8u*ahf$ne#yo1(7@kv#ajj$c7tukkalk$c#l
       - KAFKA_BROKER_URL=${HOSTNAME}:9092
       - UPLOAD_TOPIC=UPLOADS
+      - Tx=5511
+      - N_FREQ=101
   slicer:
     build: ./slicer
     volumes:
@@ -29,8 +31,9 @@ services:
       - ffmpeg
   dp:
     build: ./dp
+    volumes:
       - ./dp:/code
-      - ./common:/code/common
+      - ./common/:/code/common
   ffmpeg:
     image: jrottenberg/ffmpeg:3.3
 networks:

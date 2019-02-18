@@ -1,7 +1,12 @@
+import os
+
 from keras.layers import Dense, Activation, Dropout, Input, TimeDistributed, Conv1D
 from keras.layers import GRU, BatchNormalization
 from keras.models import Model
+import io
 
+Tx = int(os.environ.get('Tx'))
+n_freq = int(os.environ.get('N_FREQ'))
 
 def model(input_shape):
     """
@@ -43,3 +48,12 @@ def model(input_shape):
     model = Model(inputs=X_input, outputs=X)
 
     return model
+
+
+def get_model_summary():
+    stream = io.StringIO()
+    m = model((Tx, n_freq))
+    m.summary(print_fn=lambda x: stream.write(x + '\n'))
+    summary_string = stream.getvalue()
+    stream.close()
+    return summary_string

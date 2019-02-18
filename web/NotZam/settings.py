@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'cid.apps.CidAppConfig',
     'NotZam.apps.uploads',
+    'NotZam.apps.ml',
 ]
 
 MIDDLEWARE = [
