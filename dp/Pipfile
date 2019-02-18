@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 pydub = "*"
-aiokafka = "*"
 numpy = "*"
+
 
 [dev-packages]
 
 [requires]
-python_version = "3.6-alpine"
+python_version = "3.7-alpine"

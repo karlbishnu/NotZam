@@ -1,6 +1,7 @@
 FROM python:3.7-alpine
 
 RUN apk add --no-cache ffmpeg
+RUN apk --no-cache add musl-dev linux-headers g++
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
