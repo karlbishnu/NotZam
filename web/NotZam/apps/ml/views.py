@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpRequest
 from django.utils.datastructures import MultiValueDict
 
 # Create your views here.
-from model.model import get_model_summary
+from common.model.model import get_model_summary
 
 logger = logging.getLogger('notzam')
 
