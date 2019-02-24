@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 pydub = "*"
 numpy = "*"
+kafka-python = "*"
+matplotlib = "*"
 
 
 [dev-packages]
