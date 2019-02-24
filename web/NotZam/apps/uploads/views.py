@@ -17,6 +17,7 @@ TOPIC = os.environ.get('UPLOAD_TOPIC')
 
 logger = logging.getLogger('notzam')
 
+logger.info("KAFKA_BROKER_URL: " + KAFKA_BROKER_URL)
 
 def home(request):
     documents = Document.objects.all()

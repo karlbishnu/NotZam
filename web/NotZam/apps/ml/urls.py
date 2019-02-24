@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^model-summary$', views.model_summary, name='model_summary'),
+    url(r'^training$', views.training, name='training'),
 ]
 
 if settings.DEBUG:

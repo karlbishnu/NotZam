@@ -12,7 +12,7 @@ services:
       - 8000:8000
     environment:
       - SECRET_KEY=x^)h7pf=if_x+c8u*ahf$ne#yo1(7@kv#ajj$c7tukkalk$c#l
-      - KAFKA_BROKER_URL=${HOSTNAME}:9092
+      - KAFKA_BROKER_URL
       - UPLOAD_TOPIC=UPLOADS
       - Tx=5511
       - N_FREQ=101
@@ -23,7 +23,7 @@ services:
       - ./common:/code/common
       - ./web/uploads:/code/uploads
     environment:
-      - KAFKA_BROKER_URL=${HOSTNAME}:9092
+      - KAFKA_BROKER_URL
       - UPLOAD_TOPIC=UPLOADS
       - SLICER_TOPICS=SLICED
       - MIN_BACK_DURATION_SEC=10
@@ -34,8 +34,21 @@ services:
     volumes:
       - ./dp:/code
       - ./common/:/code/common
+    environment:
+      - KAFKA_BROKER_URL
+      - TOPIC_DP_CONSUMER=dp
+      - TOPICS_DP_PRODUCER=dped
     depends_on:
       - ffmpeg
+  trainer:
+    build: ./trainer
+    volumes:
+      - ./trainer:/code
+      - ./common/:/code/common
+    environment:
+      - KAFKA_BROKER_URL
+      - TOPIC_TRAINING_CONSUMER=trainer
+      - TOPICS_TRAINER_PRODUCER=trained
   ffmpeg:
     image: jrottenberg/ffmpeg:3.3
 networks:
