@@ -26,8 +26,7 @@ def model_summary(request: HttpRequest):
     return render(request, 'model_summary.html', {'model_summary': get_model_summary()})
 
 
-from kafka import KafkaConsumer
-c = KafkaConsumer(bootstrap_servers=KAFKA_BROKER_URL, group_id='test')
+c = consumer(KAFKA_BROKER_URL)
 tp = TopicPartition('trained', 0)
 c.assign([tp])
 
@@ -48,6 +47,6 @@ def training(request):
 
 
 def _ext_latest_record_value(msg):
-    return json.loads(msg[tp][len(msg)-1].value) if len(msg) != 0 and len(msg[tp]) != 0 else '{}'
+    return msg[tp][len(msg)-1].value if len(msg) != 0 and len(msg[tp]) != 0 else '{}'
 
 

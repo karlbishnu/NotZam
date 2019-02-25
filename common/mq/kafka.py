@@ -7,9 +7,9 @@ from kafka import KafkaConsumer, KafkaProducer
 logger = get_logger(__name__)
 
 
-def consumer(broker, topic):
+def consumer(broker, *topic):
     kafka_consumer = KafkaConsumer(
-        topic,
+        *topic,
         bootstrap_servers=broker,
         value_deserializer=lambda value: json.loads(value),
     )
