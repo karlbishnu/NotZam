@@ -36,8 +36,7 @@ logger.info(KAFKA_BROKER_URL)
 def training(request):
     if(request.is_ajax()):
         msg = c.poll(1)
-        msg = _ext_latest_record_value(msg)
-        c.seek_to_beginning()
+        msg = _ext_record_value(msg)
         logger.info(msg)
         return JsonResponse({'echo': msg})
 
@@ -46,7 +45,7 @@ def training(request):
     return render(request, 'training.html')
 
 
-def _ext_latest_record_value(msg):
+def _ext_record_value(msg):
     return msg[tp][len(msg)-1].value if len(msg) != 0 and len(msg[tp]) != 0 else '{}'
 
 
