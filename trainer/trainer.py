@@ -15,8 +15,7 @@ def training(model=None, X=None, Y=None, callbacks = []):
 
 def process(data):
     callback = data['callback']
-    #kafka_callback = KafkaCallback(callback['topics'], callback['send'])
-    kafka_callback = KafkaCallback(['trained'], callback['send'])
+    kafka_callback = KafkaCallback(callback['topics'], callback['send'])
 
     X = np.load("resources/XY_train/X.npy")
     Y = np.load("resources/XY_train/Y.npy")
