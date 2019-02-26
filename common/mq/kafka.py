@@ -4,6 +4,8 @@ from common.log.logger import get_logger
 
 from kafka import KafkaConsumer, KafkaProducer
 
+from common.json.json import NumpyEncoder
+
 logger = get_logger(__name__)
 
 
@@ -19,12 +21,12 @@ def consumer(broker, *topic):
 
 
 def serializer(m):
-    return json.dumps(m).encode('utf-8')
+    return json.dumps(m, cls=NumpyEncoder).encode('utf-8')
 
 
 def producer(broker):
     kafka_producer = KafkaProducer(bootstrap_servers=broker,
-                                   value_serializer=lambda m: json.dumps(m).encode('utf-8'))
+                                   value_serializer=lambda m: serializer(m))
     logger.info("Kafka producer of {broker} started".format(broker=broker))
 
     def send(topic, message):
