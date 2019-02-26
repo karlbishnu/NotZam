@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from .trainer import training
+from trainer import training
 from keras.models import Model, load_model
 from keras.callbacks import ProgbarLogger, BaseLogger
 
@@ -15,14 +15,14 @@ class TestTrainer(unittest.TestCase):
 
     def test_training(self):
         #np.save("resources/XY_train/X_copy.npy", self.X)
-        callback = [BaseLogger(), ProgbarLogger()]
+        callback = [BaseLogger()]
         model: Model = training(model=self.model, X=self.X, Y=self.Y, callbacks=callback)
 
 
         loss, acc = model.evaluate(self.X_dev, self.Y_dev)
 
         print(acc)  # 9312872886657715
-        # model.save('resources/model/test_model.h5')
+        model.save('resources/model/test_model.h5')
 
     def test_model(self):
         model:Model = load_model('resources/model/tr_model.h5')
