@@ -6,8 +6,8 @@ services:
     command: python /code/manage.py migrate --noinput
     command: python /code/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./web:/code
       - ./common/:/code/common
+      - ./web/uploads/:/code/uploads
     ports:
       - 8000:8000
     environment:
@@ -16,10 +16,11 @@ services:
       - UPLOAD_TOPIC=UPLOADS
       - Tx=5511
       - N_FREQ=101
+    depends_on:
+      - ffmpeg
   slicer:
     build: ./slicer
     volumes:
-      - ./slicer:/code
       - ./common:/code/common
       - ./web/uploads:/code/uploads
     environment:
@@ -32,7 +33,6 @@ services:
   dp:
     build: ./dp
     volumes:
-      - ./dp:/code
       - ./common/:/code/common
     environment:
       - KAFKA_BROKER_URL
@@ -43,12 +43,22 @@ services:
   trainer:
     build: ./trainer
     volumes:
-      - ./trainer:/code
       - ./common/:/code/common
     environment:
       - KAFKA_BROKER_URL
       - TOPIC_TRAINING_CONSUMER=trainer
       - TOPICS_TRAINER_PRODUCER=trained
+  triggerdetector:
+    build: ./triggerdetector
+    volumes:
+      - ./common/:/code/common
+      - ./web/uploads/:/code/uploads
+    environment:
+      - KAFKA_BROKER_URL
+      - TOPIC_DETECTOR_CONSUMER=detector
+      - TOPICS_DETECTOR_PRODUCER=detected
+    depends_on:
+      - ffmpeg
   ffmpeg:
     image: jrottenberg/ffmpeg:3.3
 networks:

@@ -9,10 +9,10 @@ gunicorn = "==19.9.0"
 djangorestframework = "*"
 django-rest-swagger = "*"
 django-cid = "*"
-numpy = "*"
 keras = "*"
 kafka-python = "*"
 tensorflow = "*"
+
 
 [dev-packages]
 
