@@ -14,7 +14,6 @@ def consumer(broker, *topic):
         *topic,
         bootstrap_servers=broker,
         value_deserializer=lambda value: json.loads(value),
-        api_version=(0, 10, 1),
     )
 
     logger.info("Kafka consumer of {broker}-{topic} started".format(broker=broker, topic=topic))
@@ -28,7 +27,7 @@ def serializer(m):
 def producer(broker):
     kafka_producer = KafkaProducer(bootstrap_servers=broker,
                                    value_serializer=lambda m: serializer(m),
-                                   api_version=(0, 10, 1))
+                                   )
     logger.info("Kafka producer of {broker} started".format(broker=broker))
 
     def send(topic, message):
