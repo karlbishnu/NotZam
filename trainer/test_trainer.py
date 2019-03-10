@@ -3,7 +3,10 @@ import numpy as np
 
 from trainer import training
 from keras.models import Model, load_model
-from keras.callbacks import ProgbarLogger, BaseLogger
+from keras.callbacks import BaseLogger
+from pydub import AudioSegment
+from scipy.io import wavfile
+
 
 class TestTrainer(unittest.TestCase):
     def setUp(self):
@@ -32,3 +35,12 @@ class TestTrainer(unittest.TestCase):
     def test_X(self):
         print(self.X.shape)
         print(len(self.X.shape))
+
+    def test_pydub_comparison_with_scipy(self):
+        path = 'resources/raw_data/dev/1.wav'
+        _, wav = wavfile.read(path)
+        wav = wav[:,0]
+        audio = AudioSegment.from_file(path).split_to_mono()[0].get_array_of_samples()
+        audio = np.array(audio)
+        self.assertEqual(wav.shape, audio.shape)
+        np.testing.assert_array_equal(wav, audio)

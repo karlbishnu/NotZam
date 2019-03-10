@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pydub = "*"
+scipy = '*'
 numpy = "*"
 keras = "*"
 tensorflow = "*"
@@ -14,4 +15,4 @@ kafka-python = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.7-alpine"
+python_version = "3.7"
