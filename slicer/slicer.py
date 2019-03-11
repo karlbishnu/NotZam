@@ -1,7 +1,7 @@
 import os
-from pydub import AudioSegment
 
-from log.logger import get_logger
+from common.audio.audio_utils import open_audio
+from common.log.logger import get_logger
 
 MIN_BACK_DURATION_SEC = os.environ.get('MIN_BACK_DURATION_SEC')
 
@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 def slice_sound(path, duration_sec=MIN_BACK_DURATION_SEC):
     res = []
     try:
-        sound: AudioSegment = AudioSegment.from_file(path, channel=1)
+        sound = open_audio(path).split_to_mono()[0]
         total_duration = len(sound)
         duration_millis = duration_sec * 1000
 

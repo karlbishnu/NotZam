@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 pydub = "*"
 kafka-python = "*"
+numpy = "*"
+matplotlib = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7-alpine"
+python_version = "3.7"

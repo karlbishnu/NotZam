@@ -21,8 +21,8 @@ services:
   slicer:
     build: ./slicer
     volumes:
-      - ./common:/code/common
-      - ./web/uploads:/code/uploads
+      - ./common/:/code/common
+      - ./web/uploads/:/code/uploads
     environment:
       - KAFKA_BROKER_URL
       - UPLOAD_TOPIC=UPLOADS
