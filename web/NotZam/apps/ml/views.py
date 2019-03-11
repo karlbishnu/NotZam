@@ -30,17 +30,19 @@ def model_summary(request: HttpRequest):
 trained = consumer(KAFKA_BROKER_URL)
 trained_partition = TopicPartition('trained', 0)
 trained.assign([trained_partition])
+trained.poll(1)
 
 detected = consumer(KAFKA_BROKER_URL)
 detected_partition = TopicPartition('detected', 0)
 detected.assign([detected_partition])
+detected.poll(1)
 
 logger.info(KAFKA_BROKER_URL)
 
 
 def training(request):
     if request.is_ajax():
-        msg = trained.poll(1)
+        msg = trained.poll(50)
         msg = _ext_record_value(msg, trained_partition)
         logger.info(msg)
         return JsonResponse({'echo': msg})
@@ -52,7 +54,7 @@ def training(request):
 
 def word_trigger(request):
     if request.is_ajax():
-        msg = detected.poll(1)
+        msg = detected.poll(50)
         msg = _ext_record_value(msg, detected_partition)
         logger.info(msg)
         return JsonResponse({'detected': msg})
