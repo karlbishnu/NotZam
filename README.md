@@ -11,7 +11,7 @@ Because I'm a Java back-end application programmer, almost concepts, I used for 
 ## Getting Started
 1. Install [Docker](https://www.docker.com/products/docker-desktop).
 2. Change the value of "{HOSTNAME}" in ".env" to your \$HOSTNAME result of command "echo $HOSTNAME"
-3. Run following commands: 
+3. Run following commands:
 <pre><code>$docker network create kafka-network
 $docker-comspose -f docker-comspose.kafka.yml up
 #open another tab and run. It will takes a few minutes:
@@ -20,6 +20,26 @@ $docker-compose up --build </code></pre>
 5. If you can see a simple web page, which contains a file upload form, it's done.
 6. Download and upload a [sample](web/uploads/sample.wav) for test.
 7. After uploading a file, you can see "Get Result" below the file form and please click it. Then, you can see "[2567.2727272727275]", which indicating trigger words time position in the sample audio.
+
+## Architecture
+```mermaid
+graph LR
+  W[Web Browser]-.http/ajax.->D[web-Django]
+  subgraph HOST
+    subgraph Docker
+      D-.kafka-network.-K[Kafka]
+      S[slicer]-.kafka-network.-K
+      DP[dp]-.kafka-network.-K
+      TR[trainer]-.kafka-network.-K
+      TD[triggerdetector]-.kafka-network.-K
+    end
+  F[File Directory]-.file i/o.-D
+  F-.file i/o.-S
+  F-.file i/o.-DP
+  F-.file i/o.-TR
+  F-.file i/o.->TD
+  end
+```
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
