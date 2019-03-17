@@ -24,7 +24,7 @@ def model(input_shape):
     ### START CODE HERE ###
 
     # Step 1: CONV layer (≈4 lines)
-    X = Conv1D(196, kernel_size=15, strides=4)(X_input)  # CONV1D
+    X = Conv1D(256, kernel_size=15, strides=4)(X_input)  # CONV1D
     X = BatchNormalization(axis=2)(X)  # Batch normalization
     X = Activation('relu')(X)  # ReLu activation
     X = Dropout(0.8)(X)  # dropout (use 0.8)

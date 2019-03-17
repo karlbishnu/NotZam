@@ -18,7 +18,7 @@ $docker-comspose -f docker-comspose.kafka.yml up
 #open another tab and run. It will takes a few minutes:
 $docker-compose up --build
 ```
-4. Open your web browser and connect to "http://localhost:8000/ml/word-trigger"
+4. Open your web browser and connect to "http://localhost:8000/ml/trigger-word"
 5. If you can see a simple web page, which contains a file upload form, it's done.
 6. Download and upload a [sample](web/uploads/sample.wav) for test.
 7. After uploading a file, you can see "Get Result" below the file form and please click it. Then, you can see "[2567.2727272727275]", which indicating trigger words time position in the sample audio.

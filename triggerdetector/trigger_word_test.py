@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from pydub import AudioSegment
-from word_trigger import fit_audio, make_output
+from trigger_word import fit_audio, make_output
 
 
 class WordTriggerTest(unittest.TestCase):

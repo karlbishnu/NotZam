@@ -1,7 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'ml_base.html' %}
 
 {% block content %}
-
-<a href="{% url 'model_summary' %}">Model Summary</a>
+    <ul>
+    <li>
+      <a href="{% url 'ml_model_summary' %}">Model Summary</a>
+    </li>
+      <li>
+      <a href="{% url 'ml_training' %}">Training Model</a>
+    </li>
+    <li>
+      <a href="{% url 'ml_detect_trigger_word' %}">Detecting Trigger Word</a>
+    </li>
+  </ul>
 
 {% endblock %}

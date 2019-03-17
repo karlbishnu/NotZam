@@ -7,10 +7,8 @@ from . import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^backgrounds/$', views.backgrounds, name='background_upload'),
-    url(r'^activates/$', views.activates, name='classes_upload'),
-    url(r'^negatives/$', views.negatives, name='classes_upload'),
-    url(r'^classes/$', views.classes, name='classes_upload'),
-    url(r'^form/$', views.model_form_upload, name='model_form_upload'),
+    url(r'^activates/$', views.activates, name='activates_upload'),
+    url(r'^negatives/$', views.negatives, name='negatives_upload'),
 ]
 
 if settings.DEBUG:

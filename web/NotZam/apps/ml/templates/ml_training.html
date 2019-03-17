@@ -1,21 +1,17 @@
 {% extends 'ml_base.html' %}
 
 {% block content %}
-    <b id="test" onclick="getTraining()">whoami</b>
-    <b id="echo"></b>
-    <p>AJAX Test</p>
+    <b id="test" onclick="getTraining()">Get Training Progress</b>
+    <b id="training_result"></b>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script>
     function getTraining(){
             $.ajax({
                 url: '/ml/training',
-                data: {
-                  'echo': 'hello'
-                },
                 dataType: 'json',
                 success: function (data) {
-                  if (data.echo != "{}") {
-                      $('#echo').text(JSON.stringify(data.echo))
+                  if (data.training_result != "{}") {
+                      $('#training_result').text(JSON.stringify(data.training_result))
                   }else{
                       getTraining();
                   }

@@ -24,5 +24,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('uploads/', include('NotZam.apps.uploads.urls')),
     path('ml/', include('NotZam.apps.ml.urls')),
-    #path('', include('uploads.urls')),
 ]

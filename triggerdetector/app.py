@@ -3,7 +3,7 @@ import os
 from common.mq.kafka import consumer, producer
 from common.log.logger import get_logger
 from common.log.cid import set_cid
-from word_trigger import process
+from trigger_word import process
 
 KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
 CONSUMER_TOPIC = os.environ.get('TOPIC_DETECTOR_CONSUMER')

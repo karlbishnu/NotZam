@@ -19,7 +19,7 @@
     function getPrediction(){
             $.ajax({
                 type: "GET",
-                url: '/ml/word-trigger',
+                url: '/ml/trigger-word',
                 dataType: 'json',
                 success: function (data) {
                   if (data.detected !== "{}") {

@@ -29,6 +29,7 @@ class TestTrainer(unittest.TestCase):
 
     def test_model(self):
         model:Model = load_model('resources/model/tr_model.h5')
+        model.summary()
         loss, acc = model.evaluate(self.X_dev, self.Y_dev)
         print(acc)
 

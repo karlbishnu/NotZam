@@ -24,7 +24,7 @@ def home(request):
 
 
 def model_summary(request: HttpRequest):
-    return render(request, 'model_summary.html', {'model_summary': get_model_summary()})
+    return render(request, 'ml_model_summary.html', {'model_summary': get_model_summary()})
 
 
 trained = consumer(KAFKA_BROKER_URL)
@@ -45,14 +45,14 @@ def training(request):
         msg = trained.poll(50)
         msg = _ext_record_value(msg, trained_partition)
         logger.info(msg)
-        return JsonResponse({'echo': msg})
+        return JsonResponse({'training_result': msg})
 
     send = producer(KAFKA_BROKER_URL)
     send('trainer', {'cid': get_cid()})
     return render(request, 'ml_training.html')
 
 
-def word_trigger(request):
+def trigger_word(request):
     if request.is_ajax():
         msg = detected.poll(50)
         msg = _ext_record_value(msg, detected_partition)
@@ -66,9 +66,9 @@ def word_trigger(request):
 
         send = producer(KAFKA_BROKER_URL)
         send('detector', {'cid': get_cid(), 'filePath': fs.base_location+'/'+filename})
-        return render(request, 'ml_word_trigger.html', {'reloaded': True})
+        return render(request, 'ml_detect_trigger_word.html', {'reloaded': True})
 
-    return render(request, 'ml_word_trigger.html')
+    return render(request, 'ml_detect_trigger_word.html')
 
 
 def _ext_record_value(msg, partition):

@@ -36,10 +36,6 @@ def negatives(request):
     return save_file(request, 'negatives')
 
 
-def classes(request):
-    return save_file(request)
-
-
 def save_file(request, path=None):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
@@ -50,24 +46,10 @@ def save_file(request, path=None):
         logger.info(fs.path(filename))
 
         make_json(fs.path(filename))
-        return render(request, 'background_upload.html', {
+        return render(request, path+'_uploads.html', {
             'uploaded_file_url': uploaded_file_url
         })
-    return render(request, 'background_upload.html')
-
-
-def model_form_upload(request):
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = DocumentForm()
-    return render(request, 'model_form_upload.html', {
-        'form': form
-    })
-
+    return render(request, path+'_uploads.html' if path is not None else 'home.html')
 
 msg_q = producer(KAFKA_BROKER_URL)
 

@@ -15,7 +15,7 @@ $docker-comspose -f docker-comspose.kafka.yml up
 #다른 탭을 열어서 실행합니다. 좀 오래 걸립니다:
 $docker-compose up --build
 ```
-4. 웹 브라우저를 열어서 다음의 주소로 접속합니다. "http://localhost:8000/ml/word-trigger"
+4. 웹 브라우저를 열어서 다음의 주소로 접속합니다. "http://localhost:8000/ml/trigger-word"
 5. 파일 업로드 폼이 있는 단순한 웹 페이즈가 보인다면, 잘 된 겁니다.
 6. [샘플](web/uploads/sample.wav)파일을 다운로드하고 업로드해서 테스트 해보세요.
 7. 업로드가 완료되면, "Get Result"가 보일 것이고, 이를 클릭하면  "[2567.2727272727275]"가 보일 겁니다. 이는 업로드 된 오디오 파일의 시동어 위치를 표시하는 겁니다.

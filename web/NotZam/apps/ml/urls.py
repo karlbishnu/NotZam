@@ -6,9 +6,9 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
-    url(r'^model-summary$', views.model_summary, name='model_summary'),
+    url(r'^model-summary$', views.model_summary, name='ml_model_summary'),
     url(r'^training$', views.training, name='ml_training'),
-    url(r'^word-trigger$', views.word_trigger, name='ml_word_trigger'),]
+    url(r'^trigger-word$', views.trigger_word, name='ml_detect_trigger_word'),]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
