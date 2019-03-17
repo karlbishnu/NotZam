@@ -9,7 +9,8 @@ NotZam은 Python, Django, Kafka, Docker, 및 딥러닝을 어떻게 쓰는지 �
 1. [Docker](https://www.docker.com/products/docker-desktop)를 설치합니다.
 2. ".env" 파일의 "{HOSTNAME}" 값을 "echo $HOSTNAME"결과인 \$HOSTNAME으로 바꿉니다.
 3. 아래 명령들을 실행 합니다.: 
-<pre><code>$docker-comspose -f docker-comspose.kafka.yml up
+<pre><code>$docker network create kafka-network
+$docker-comspose -f docker-comspose.kafka.yml up
 #다른 탭을 열어서 실행합니다. 좀 오래 걸립니다:
 $docker-compose up --build </code></pre>
 4. 웹 브라우저를 열어서 다음의 주소로 접속합니다. "http://localhost:8000/ml/word-trigger"

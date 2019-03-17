@@ -12,7 +12,8 @@ Because I'm a Java back-end application programmer, almost concepts, I used for 
 1. Install [Docker](https://www.docker.com/products/docker-desktop).
 2. Change the value of "{HOSTNAME}" in ".env" to your \$HOSTNAME result of command "echo $HOSTNAME"
 3. Run following commands: 
-<pre><code>$docker-comspose -f docker-comspose.kafka.yml up
+<pre><code>$docker network create kafka-network
+$docker-comspose -f docker-comspose.kafka.yml up
 #open another tab and run. It will takes a few minutes:
 $docker-compose up --build </code></pre>
 4. Open your web browser and connect to "http://localhost:8000/ml/word-trigger"
