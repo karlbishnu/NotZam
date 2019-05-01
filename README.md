@@ -1,5 +1,6 @@
 # NotZam
 NotZam is a just study project for me to learn how to use Python, Django, Kafka, Docker, and Deep Learning. The training model of detecting a trigger word and sample audio files are from an assignment in [Cousera Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning).
+However, the overall system architecture is my own work.
 
 
 ## Note to Readers
